@@ -27,7 +27,7 @@ jobs:
         with:
           distribution: goreleaser
           version: '~> v2'
-          args: release -f .github/build/mac.yml --clean
+          args: release -f .github/build/mac.yml --clean ${{ github.ref_type != 'tag' && '--snapshot' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,7 +50,7 @@ jobs:
         with:
           distribution: goreleaser
           version: '~> v2'
-          args: release -f .github/build/linux.yml --clean
+          args: release -f .github/build/linux.yml --clean ${{ github.ref_type != 'tag' && '--snapshot' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -70,6 +70,6 @@ jobs:
         with:
           distribution: goreleaser
           version: '~> v2'
-          args: release -f .github/build/windows.yml --clean
+          args: release -f .github/build/windows.yml --clean ${{ github.ref_type != 'tag' && '--snapshot' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
