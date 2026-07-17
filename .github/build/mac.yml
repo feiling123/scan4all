@@ -1,3 +1,4 @@
+version: 2
 env:
   - GO111MODULE=on
 before:
@@ -18,9 +19,9 @@ builds:
       - amd64
 
 archives:
-- format: zip
-  replacements:
-      darwin: macOS
+  - formats:
+      - zip
+    name_template: "{{ .ProjectName }}_{{ .Version }}_macOS_{{ .Arch }}"
 
 checksum:
   name_template: "{{ .ProjectName }}-mac-checksums.txt"
