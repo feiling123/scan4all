@@ -30,6 +30,32 @@ jobs:
           args: release -f .github/build/mac.yml --clean ${{ github.ref_type != 'tag' && '--snapshot' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload snapshot artifacts
+        if: github.ref_type != 'tag'
+        id: upload-snapshot
+        uses: actions/upload-artifact@v7
+        with:
+          name: scan4all-mac-${{ github.sha }}
+          path: dist/**
+          if-no-files-found: error
+      - name: Add download link
+        if: github.ref_type != 'tag'
+        shell: bash
+        run: |
+          {
+            echo "### Snapshot artifacts"
+            echo ""
+            echo "- Download: ${{ steps.upload-snapshot.outputs.artifact-url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Add release link
+        if: github.ref_type == 'tag'
+        shell: bash
+        run: |
+          {
+            echo "### GitHub Release"
+            echo ""
+            echo "- Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   build-linux:
     runs-on: ubuntu-latest
@@ -53,6 +79,32 @@ jobs:
           args: release -f .github/build/linux.yml --clean ${{ github.ref_type != 'tag' && '--snapshot' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload snapshot artifacts
+        if: github.ref_type != 'tag'
+        id: upload-snapshot
+        uses: actions/upload-artifact@v7
+        with:
+          name: scan4all-linux-${{ github.sha }}
+          path: dist/**
+          if-no-files-found: error
+      - name: Add download link
+        if: github.ref_type != 'tag'
+        shell: bash
+        run: |
+          {
+            echo "### Snapshot artifacts"
+            echo ""
+            echo "- Download: ${{ steps.upload-snapshot.outputs.artifact-url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Add release link
+        if: github.ref_type == 'tag'
+        shell: bash
+        run: |
+          {
+            echo "### GitHub Release"
+            echo ""
+            echo "- Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   build-windows:
     runs-on: windows-latest
@@ -73,3 +125,29 @@ jobs:
           args: release -f .github/build/windows.yml --clean ${{ github.ref_type != 'tag' && '--snapshot' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload snapshot artifacts
+        if: github.ref_type != 'tag'
+        id: upload-snapshot
+        uses: actions/upload-artifact@v7
+        with:
+          name: scan4all-windows-${{ github.sha }}
+          path: dist/**
+          if-no-files-found: error
+      - name: Add download link
+        if: github.ref_type != 'tag'
+        shell: bash
+        run: |
+          {
+            echo "### Snapshot artifacts"
+            echo ""
+            echo "- Download: ${{ steps.upload-snapshot.outputs.artifact-url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Add release link
+        if: github.ref_type == 'tag'
+        shell: bash
+        run: |
+          {
+            echo "### GitHub Release"
+            echo ""
+            echo "- Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+          } >> "$GITHUB_STEP_SUMMARY"
